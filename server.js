@@ -10,16 +10,20 @@ const requestListener = (request, response) => {
         response.end('<h1>Hello boys!</h1>')
     }
 
+    // curl -X POST -H "Content-Type: application/json" http://localhost:5000 -d "{\"name\": \"Rickyslash\"}"
     if (method === 'POST') {
-        response.end('<h1>Hai boys!</h1>')
-    }
+        let body = []
 
-    if (method === 'PUT') {
-        response.end('<h1>POTREEEE!</h1>')
-    }
+        request.on('data', chunk => {
+            body.push(chunk) // push portion of request data content to `body`
+        })
 
-    if (method === 'DELETE') {
-        response.end('<h1>Bonjour boys!</h1>')
+        // called after `request.on('data', chunk => { .. }` finished receiving data
+        request.on('end', () => {
+            body = Buffer.concat(body).toString() // concatenate all chuncks in `body` to single Buffer object, then turn to string
+            const { name } = JSON.parse(body)
+            response.end(`<h1>Hello, ${name}!</h1>`)
+        })
     }
 }
 
