@@ -2,18 +2,20 @@ const http = require('http')
 
 const requestListener = (request, response) => {
     response.setHeader('Content-Type', 'text/html')
-    response.statusCode = 200
 
     const { method, url } = request
 
     if (url === '/') {
         if (method === 'GET') {
+            response.statusCode = 200
             response.end('<h1>This is homepage</h1>')
         } else {
+            response.statusCode = 400
             response.end(`<h1>Can't access this page using ${method} request</h1>`)
         }
     } else if (url === '/about') {
         if (method === 'GET') {
+            response.statusCode = 200
             response.end('<h1>This is About page</h1>')
         } else if (method === 'POST') { // curl -X POST -H "Content-Type: application/json" http://localhost:5000 -d "{\"name\": \"Rickyslash\"}"
             let body = []
@@ -26,12 +28,16 @@ const requestListener = (request, response) => {
             request.on('end', () => {
                 body = Buffer.concat(body).toString() // concatenate all chuncks in `body` to single Buffer object, then turn to string
                 const { name } = JSON.parse(body)
+
+                response.statusCode = 200
                 response.end(`<h1>Hello, ${name}!</h1>`)
             })
         }  else {
+            response.statusCode = 400
             response.end(`<h1>Can't access this page using ${method} request</h1>`)
         }
     } else {
+        response.statusCode = 400
         response.end('<h1>Wait, I cannot find the page! What to do?</h1>')
     }
 }
