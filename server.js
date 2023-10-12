@@ -1,14 +1,15 @@
 const http = require('http')
 
 const requestListener = (request, response) => {
-    response.setHeader('Content-Type', 'text/html')
+    response.setHeader('Content-Type', 'application/json')
+    response.setHeader('X-Powered-By', 'NodeJS')
 
     const { method, url } = request
 
     if (url === '/') {
         if (method === 'GET') {
             response.statusCode = 200
-            response.end('<h1>This is homepage</h1>')
+            response.end('<h1>This is Homepage</h1>')
         } else {
             response.statusCode = 400
             response.end(`<h1>Can't access this page using ${method} request</h1>`)
