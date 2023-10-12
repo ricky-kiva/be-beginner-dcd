@@ -9,15 +9,21 @@ const requestListener = (request, response) => {
     if (url === '/') {
         if (method === 'GET') {
             response.statusCode = 200
-            response.end('<h1>This is Homepage</h1>')
+            response.end(JSON.stringify({
+                message: 'This is Homepage'
+            }))
         } else {
             response.statusCode = 400
-            response.end(`<h1>Can't access this page using ${method} request</h1>`)
+            response.end(JSON.stringify({
+                message: `Can't access this page using ${method} request`
+            }))
         }
     } else if (url === '/about') {
         if (method === 'GET') {
             response.statusCode = 200
-            response.end('<h1>This is About page</h1>')
+            response.end(JSON.stringify({
+                message: 'This is About page'
+            }))
         } else if (method === 'POST') { // curl -X POST -H "Content-Type: application/json" http://localhost:5000 -d "{\"name\": \"Rickyslash\"}"
             let body = []
 
@@ -31,15 +37,21 @@ const requestListener = (request, response) => {
                 const { name } = JSON.parse(body)
 
                 response.statusCode = 200
-                response.end(`<h1>Hello, ${name}!</h1>`)
+                response.end(JSON.stringify({
+                    message: `Hello, ${name}!`
+                }))
             })
         }  else {
             response.statusCode = 400
-            response.end(`<h1>Can't access this page using ${method} request</h1>`)
+            response.end(JSON.stringify({
+                message: `Can't access this page using ${method} request`
+            }))
         }
     } else {
         response.statusCode = 400
-        response.end('<h1>Wait, I cannot find the page! What to do?</h1>')
+        response.end(JSON.stringify({
+            message: "Wait, I cannot find the page! What to do?"
+        }))
     }
 }
 
