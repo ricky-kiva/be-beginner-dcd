@@ -62,4 +62,70 @@ const addNoteHandler = (request, h) => {
     return response
 }
 
-module.exports = { getAllNotesHandler, getNoteByIdHandler, addNoteHandler }
+const editNoteByIdHandler = (request, h) => {
+    const { id } = request.params
+
+    const { title, tags, body } = request.payload
+    const updatedAt = new Date().toISOString()
+
+    const index = notes.findIndex((note) => note.id === id)
+
+    if (index !== -1) {
+        notes[index] = { // will update values with corresponding variable names
+            ...notes[index],
+            title,
+            tags,
+            body,
+            updatedAt
+        }
+
+        const response = h.response({
+            status: 'success',
+            message: 'Note successfully updated'
+        })
+    
+        response.code(200)
+        return response
+    }
+
+    const response = h.response({
+        status: 'fail',
+        message: 'Failed to update note. Id is not found'
+    })
+
+    response.code(404)
+    return response
+}
+
+const deleteNoteByIdHandler = (request, h) => {
+    const { id } = request.params
+
+    const index = notes.findIndex((note) => note.id === id)
+
+    if (index !== -1) {
+        notes.splice(index, 1)
+        const response = h.response({
+            status: 'success',
+            message: 'Note successfully deleted'
+        })
+
+        response.code(200)
+        return response
+    }
+
+    const response = h.response({
+        status: 'fail',
+        message: 'Failed to delete note. Cannot find the Id'
+    })
+
+    response.code(404)
+    return response
+}
+
+module.exports = {
+    getAllNotesHandler,
+    getNoteByIdHandler,
+    addNoteHandler,
+    editNoteByIdHandler,
+    deleteNoteByIdHandler
+}
