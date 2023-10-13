@@ -36,4 +36,4 @@ const addNoteHandler = (request, h) => {
     return response
 }
 
-module.expores = { addNoteHandler }
+module.exports = { addNoteHandler }
