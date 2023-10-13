@@ -6,6 +6,27 @@ const getAllNotesHandler = () => ({
     data: { notes }
 })
 
+const getNoteByIdHandler = (request, h) => {
+    const { id } = request.params
+
+    const note = notes.filter((n) => n.id === id)[0]
+
+    if (note !== undefined) {
+        return {
+            status: 'success',
+            data: { note }
+        }
+    }
+
+    const response = h.response({
+        status: 'fail',
+        message: "Sorry bro, I'm unable to find that note"
+    })
+    
+    response.code(404)
+    return response
+}
+
 const addNoteHandler = (request, h) => {
     const { title, tags, body } = request.payload
 
@@ -41,4 +62,4 @@ const addNoteHandler = (request, h) => {
     return response
 }
 
-module.exports = { getAllNotesHandler, addNoteHandler }
+module.exports = { getAllNotesHandler, getNoteByIdHandler, addNoteHandler }
