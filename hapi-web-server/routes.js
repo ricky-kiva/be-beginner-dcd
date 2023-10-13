@@ -28,6 +28,14 @@ const routes = [{
     // optional parameter could only be obtained from the last path
     handler: (request, h) => {
         const { name = 'Human'} = request.params // get parameter from path
+
+        // to access: {root_path}/hello/{name}?lang=id
+        const { lang } = request.query // get query from path
+
+        if (lang === 'id') {
+            return `Apa kabar, ${name}!`
+        }
+        
         return `Hello, ${name}`
     }
 }, {
